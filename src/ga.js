@@ -11,6 +11,22 @@ function crossOver(orderA, orderB) {
     return neworder;
 }
 
+function mutate(order, mutationRate) {
+    for (let i = 0; i < cities.length; i++) {
+        if (random(1) < mutationRate) {
+            const indexA = floor(random(order.length));
+            const indexB = (indexA + 1) % cities.length;
+            swap(order, indexA, indexB);
+        }
+    }
+}
+
+function swap(a, i, j) {
+    const temp = a[i];
+    a[i] = a[j];
+    a[j] = temp;
+}
+
 function calcDistance(points, order) {
     let sum = 0;
     for (let i = 0; i < order.length - 1; i++) {
