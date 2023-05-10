@@ -1,3 +1,16 @@
+function crossOver(orderA, orderB) {
+    const start = floor(random(orderA.length));
+    const end = floor(random(start + 1, orderA.length));
+    const neworder = orderA.slice(start, end);
+    for (let i = 0; i < orderB.length; i++) {
+        const city = orderB[i];
+        if (!neworder.includes(city)) {
+            neworder.push(city);
+        }
+    }
+    return neworder;
+}
+
 function calcDistance(points, order) {
     let sum = 0;
     for (let i = 0; i < order.length - 1; i++) {
