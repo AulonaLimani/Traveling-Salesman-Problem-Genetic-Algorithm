@@ -11,6 +11,9 @@ let startAlgorithm = false;
 let generatePopulation = false;
 let nrCities;
 
+const d = 16;
+let count = 0;
+
 const start = (document.getElementById("start").onclick = function () {
   //todo
 });
@@ -44,6 +47,35 @@ function draw() {
     nextGeneration();
 
     //todo
+  }
+}
+
+if (!startAlgorithm) {
+  if (!(mouseX < (d / 2) || mouseY < (d / 2) || mouseX > width - (d / 2) || mouseY > height - (d / 2))) {
+
+    const x = mouseX;
+    const y = mouseY;
+    let pozitionTaken = false;
+
+    for (let i = 0; i < cities.length; i++) {
+      if (cities[i].x === x && cities[i].y === y) {
+        pozitionTaken = true;
+      }
+    }
+
+    if (!pozitionTaken) {
+      const v = createVector(x, y);
+      cities[cities.length] = v;
+      order[count] = count;
+      count++;
+    }
+  }
+
+  if (generatePopulation) {
+    for (let i = 0; i < popSize; i++) {
+      population[i] = shuffle(order);
+    }
+    startAlgorithm = true;
   }
 }
 
