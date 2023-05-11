@@ -1,3 +1,38 @@
+function calculateFitness() {
+    let currentRecord = Infinity;
+    for (let i = 0; i < population.length; i++) {
+        const d = calcDistance(cities, population[i]);
+
+        if (worstDistance !== 0){
+            if (d > worstDistance){
+                worstDistance = d;
+            }
+        }else {
+            worstDistance = d;
+        }
+
+        if (d < recordDistance) {
+            recordDistance = d;
+            bestEver = population[i];
+        }
+        if (d < currentRecord) {
+            currentRecord = d;
+            currentBest = population[i];
+        }
+        fitness[i] = 1 / (pow(d, 8) + 1);
+    }
+}
+
+function normalizeFitness() {
+    let sum = 0;
+    for (let i = 0; i < fitness.length; i++) {
+        sum += fitness[i];
+    }
+    for (let i = 0; i < fitness.length; i++) {
+        fitness[i] = fitness[i] / sum;
+    }
+}
+
 function nextGeneration() {
     const newPopulation = [];
     for (var i = 0; i < population.length; i++) {
