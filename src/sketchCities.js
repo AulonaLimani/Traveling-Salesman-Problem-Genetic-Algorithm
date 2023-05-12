@@ -24,10 +24,30 @@ let bestEver;
 let currentBest;
 
 const start = (document.getElementById("start").onclick = function () {
-  //todo
+  if (restartAlgorithm) {
+        alert("You must refresh to ");
+    } else {
+        if (cities.length > 2) {
+            generatePopulation = true;
+            count = 0;
+            restartAlgorithm = true;
+        } else {
+            alert("There must be at least 3 cities given!");
+        }
+    }
 });
 const generate = (document.getElementById("generate").onclick = function () {
-  //todo
+  if (restartAlgorithm) {
+        alert("You must refresh to ");
+    } else {
+        cities = [];
+        order = [];
+        generateCities = true;
+        generatePopulation = true;
+        generateCitiesFunction();
+        count = 0;
+        restartAlgorithm = true;
+    }
 });
 const refresh = (document.getElementById("refresh").onclick = function () {
   window.location.reload();
