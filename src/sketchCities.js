@@ -14,6 +14,15 @@ let nrCities;
 const d = 16;
 let count = 0;
 
+let restartAlgorithm = false;
+const fitness = [];
+let generateCities = false;
+let population = [];
+let recordDistance = Infinity;
+let worstDistance = 0;
+let bestEver;
+let currentBest;
+
 const start = (document.getElementById("start").onclick = function () {
   //todo
 });
@@ -41,12 +50,67 @@ function draw() {
   vertex(1440 / 2 + 2, 710);
   endShape();
 
+  var ctx = canvas.drawingContext;
+
   if (startAlgorithm) {
     calculateFitness();
     normalizeFitness();
     nextGeneration();
 
-    //todo
+    stroke(255, 0, 0);
+        strokeWeight(2);
+        noFill();
+        beginShape();
+        for (let i = 0; i < currentBest.length; i++) {
+            const n = currentBest[i];
+            vertex(cities[n].x, cities[n].y);
+            ellipse(cities[n].x, cities[n].y, 16, 16);
+        }
+        vertex(cities[currentBest[0]].x, cities[currentBest[0]].y);
+        endShape();
+
+        ctx.font = '15pt Arial';
+        ctx.fillStyle = 'red';
+        ctx.fillText(cities.length + " Cities", 5, 17);
+
+        ctx.font = '15pt Arial';
+        ctx.fillStyle = 'red';
+        ctx.fillText("Worst Distance: " + worstDistance.toFixed(2), 5, 705);
+
+        translate(width, 0);
+        stroke(0, 128, 0);
+        strokeWeight(4);
+        noFill();
+        beginShape();
+        for (let i = 0; i < bestEver.length; i++) {
+            const n = bestEver[i];
+            vertex(cities[n].x, cities[n].y);
+            ellipse(cities[n].x, cities[n].y, 16, 16);
+        }
+        vertex(cities[bestEver[0]].x, cities[bestEver[0]].y); // add a vertex at the first city
+        endShape();
+
+        ctx.font = '15pt Arial';
+        ctx.fillStyle = 'green';
+        ctx.fillText("Best Distance: " + recordDistance.toFixed(2), 5, 705);
+    } else {
+
+        stroke(255, 255, 255);
+        strokeWeight(2);
+        noFill();
+        beginShape();
+        for (let i = 0; i < cities.length; i++) {
+            const c = cities[i];
+            ellipse(c.x, c.y, d, d);
+        }
+        endShape();
+
+        if (cities.length !== 0) {
+            ctx.font = '15pt Arial';
+            ctx.fillStyle = 'red';
+            ctx.fillText(cities.length + " Cities", 5, 17);
+        }
+
   }
 }
 
