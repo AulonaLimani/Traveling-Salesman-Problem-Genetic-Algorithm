@@ -22,10 +22,12 @@ const refresh = document.getElementById("refresh").onclick = function (){
     window.location.reload();
 }
 const editMap = document.getElementById("editMap").onclick = function () {
-    //todo
+    container.classList.remove("container-below");
+    container.classList.add("container-above");
 }
 const editLocations = document.getElementById("editLocations").onclick = function () {
-    //todo
+    container.classList.remove("container-above");
+    container.classList.add("container-below");
 }
 
 function setup() {
