@@ -20,16 +20,29 @@ let restartAlgorithm = false;
 
 const container = document.getElementById("container");
 const start = document.getElementById("start").onclick = function (){
-    //todo
+    if (restartAlgorithm) {
+        alert("You must refresh to ");
+    } else {
+        if (cities.length > 2) {
+            generatePopulation = true;
+            count = 0;
+            restartAlgorithm = true;
+        } else {
+            alert("There must be at least 3 cities given!");
+        }
+    }
 }
+
 const refresh = document.getElementById("refresh").onclick = function (){
     window.location.reload();
 }
 const editMap = document.getElementById("editMap").onclick = function () {
-    //todo
+    container.classList.remove("container-below");
+    container.classList.add("container-above");
 }
 const editLocations = document.getElementById("editLocations").onclick = function () {
-    //todo
+    container.classList.remove("container-above");
+    container.classList.add("container-below");
 }
 
 function setup() {
