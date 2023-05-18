@@ -2,18 +2,25 @@ function calculateFitness() {
     let currentRecord = Infinity;
     for (let i = 0; i < population.length; i++) {
         const d = calcDistance(cities, population[i]);
+        currentDistance = d;
 
-        if (worstDistance !== 0){
-            if (d > worstDistance){
+        if (worstDistance !== 0) {
+            if (d > worstDistance) {
                 worstDistance = d;
             }
-        }else {
+        } else {
             worstDistance = d;
         }
 
         if (d < recordDistance) {
             recordDistance = d;
             bestEver = population[i];
+            foundCout = 0;
+        } else {
+            foundCout++;
+            if (foundCout >= foundComparisons) {
+                found = true;
+            }
         }
         if (d < currentRecord) {
             currentRecord = d;
