@@ -41,7 +41,37 @@ function setup() {
 
 function draw() {
     background(0, 0, 0, 0);
+    if (startAlgorithm) {
 
+        calculateFitness();
+        normalizeFitness();
+        nextGeneration();
+
+        stroke(0, 128, 0);
+        strokeWeight(4);
+        noFill();
+        beginShape();
+        for (let i = 0; i < bestEver.length; i++) {
+            const n = bestEver[i];
+            vertex(cities[n].x, cities[n].y);
+            ellipse(cities[n].x, cities[n].y, 16, 16);
+        }
+        vertex(cities[bestEver[0]].x, cities[bestEver[0]].y); // add a vertex at the first city
+        endShape();
+
+    } else {
+
+        stroke(0, 0, 0);
+        strokeWeight(2);
+        noFill();
+        beginShape();
+        for (let i = 0; i < cities.length; i++) {
+            const c = cities[i];
+            ellipse(c.x, c.y, d, d);
+        }
+        endShape();
+
+    }
 }
 
 function mouseClicked() {
