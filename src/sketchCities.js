@@ -117,6 +117,10 @@ function draw() {
         ctx.fillStyle = 'red';
         ctx.fillText("Worst Distance: " + worstDistance.toFixed(2), 5, 700);
 
+        ctx.font = '20pt Arial';
+        ctx.fillStyle = 'red';
+        ctx.fillText("Current Distance: " + currentDistance.toFixed(2), width - 330, 700);
+
         translate(width, 0);
         stroke(0, 128, 0);
         strokeWeight(4);
@@ -169,8 +173,7 @@ function mouseClicked() {
             }
 
             if (!pozitionTaken) {
-                const v = createVector(x, y);
-                cities[cities.length] = v;
+                cities[cities.length] = createVector(x, y);
                 order[count] = count;
                 count++;
             }
@@ -189,11 +192,10 @@ function generateCitiesFunction() {
     nrCities = Math.floor(Math.random() * 16) + 15;
     let a = width;
     for (let i = 0; i < nrCities; i++) {
-        const v = createVector(
+        cities[i] = createVector(
             random(7 * (a / 8) - (a / 8) + (a / 8)) + 10,
             random(7 * (a / 8) - (a / 8)) + (a / 8) + 10
         );
-        cities[i] = v;
         order[i] = i;
     }
 
