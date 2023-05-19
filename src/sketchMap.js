@@ -28,7 +28,7 @@ let currentDistance = Infinity;
 const container = document.getElementById("container");
 const start = document.getElementById("start").onclick = function (){
     if (restartAlgorithm) {
-        alert("You must refresh to ");
+        alert("You must refresh to try again ");
     } else {
         if (cities.length > 2) {
             generatePopulation = true;
