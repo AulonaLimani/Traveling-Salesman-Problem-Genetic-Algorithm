@@ -17,16 +17,24 @@ let worstDistance = 0;
 let bestEver;
 let currentBest;
 let restartAlgorithm = false;
+let found = false;
+let foundCout = 0;
+let foundComparisons;
+let ratio = 1.00001;
+let multiplicator = 100;
+let currentDistance = Infinity;
+
 
 const container = document.getElementById("container");
 const start = document.getElementById("start").onclick = function (){
     if (restartAlgorithm) {
-        alert("You must refresh to ");
+        alert("You must refresh to try again ");
     } else {
         if (cities.length > 2) {
             generatePopulation = true;
             count = 0;
             restartAlgorithm = true;
+            foundComparisons = cities.length * ((cities.length / ratio) * multiplicator).toFixed(0);
         } else {
             alert("There must be at least 3 cities given!");
         }

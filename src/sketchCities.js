@@ -23,61 +23,81 @@ let worstDistance = 0;
 let bestEver;
 let currentBest;
 
+let found = false;
+let foundCout = 0;
+let foundComparisons;
+let ratio = 1.000001;
+let multiplicator = 100;
+let currentDistance = Infinity;
+
 const start = (document.getElementById("start").onclick = function () {
-  if (restartAlgorithm) {
-        alert("You must refresh to ");
+    if (restartAlgorithm) {
+        alert("You must refresh to try again");
     } else {
         if (cities.length > 2) {
             generatePopulation = true;
             count = 0;
             restartAlgorithm = true;
+            foundComparisons = cities.length * ((cities.length / ratio) * multiplicator).toFixed(0);
         } else {
             alert("There must be at least 3 cities given!");
         }
     }
 });
 const generate = (document.getElementById("generate").onclick = function () {
-  if (restartAlgorithm) {
-        alert("You must refresh to ");
+    if (restartAlgorithm) {
+        alert("You must refresh to try again ");
     } else {
-        cities = [];
-        order = [];
         generateCities = true;
-        generatePopulation = true;
+        // generatePopulation = true;
         generateCitiesFunction();
         count = 0;
         restartAlgorithm = true;
+
+        foundComparisons = cities.length * ((cities.length / ratio) * multiplicator).toFixed(0);
     }
 });
 const refresh = (document.getElementById("refresh").onclick = function () {
-  window.location.reload();
+    window.location.reload();
 });
 
 function setup() {
-  canvas = createCanvas(width * 2, height);
+    canvas = createCanvas(width * 2, height);
 
-  statusP = createP("").style("font-size", "32pt");
+    statusP = createP("").style("font-size", "32pt");
 }
 
 function draw() {
-  background(0);
+    background(0);
 
-  stroke(255, 255, 255);
-  strokeWeight(4);
-  noFill();
-  beginShape();
-  vertex(1440 / 2 + 2, 0);
-  vertex(1440 / 2 + 2, 710);
-  endShape();
+    stroke(255, 255, 255);
+    strokeWeight(4);
+    noFill();
+    beginShape();
+    vertex(1440 / 2 + 2, 0);
+    vertex(1440 / 2 + 2, 710);
+    endShape();
 
-  var ctx = canvas.drawingContext;
+    var ctx = canvas.drawingContext;
 
-  if (startAlgorithm) {
-    calculateFitness();
-    normalizeFitness();
-    nextGeneration();
+    if (startAlgorithm) {
 
-    stroke(255, 0, 0);
+        if (!found) {
+            calculateFitness();
+            normalizeFitness();
+            nextGeneration();
+
+            ctx.font = '20pt Arial';
+            ctx.fillStyle = 'Green';
+            ctx.fillText(((foundCout / foundComparisons) * 100).toFixed(0) + "% checked if this is the right path", width + 10, 25);
+
+        } else {
+            ctx.font = '20pt Arial';
+            ctx.fillStyle = 'Green';
+            ctx.fillText("Found!", width + 10, 25);
+        }
+
+        stroke(255, 0, 0);
         strokeWeight(2);
         noFill();
         beginShape();
@@ -89,13 +109,13 @@ function draw() {
         vertex(cities[currentBest[0]].x, cities[currentBest[0]].y);
         endShape();
 
-        ctx.font = '15pt Arial';
+        ctx.font = '20pt Arial';
         ctx.fillStyle = 'red';
-        ctx.fillText(cities.length + " Cities", 5, 17);
+        ctx.fillText(cities.length + " Cities", 5, 25);
 
-        ctx.font = '15pt Arial';
+        ctx.font = '20pt Arial';
         ctx.fillStyle = 'red';
-        ctx.fillText("Worst Distance: " + worstDistance.toFixed(2), 5, 705);
+        ctx.fillText("Worst Distance: " + worstDistance.toFixed(2), 5, 700);
 
         translate(width, 0);
         stroke(0, 128, 0);
@@ -110,9 +130,9 @@ function draw() {
         vertex(cities[bestEver[0]].x, cities[bestEver[0]].y); // add a vertex at the first city
         endShape();
 
-        ctx.font = '15pt Arial';
+        ctx.font = '20pt Arial';
         ctx.fillStyle = 'green';
-        ctx.fillText("Best Distance: " + recordDistance.toFixed(2), 5, 705);
+        ctx.fillText("Best Distance: " + recordDistance.toFixed(2), 5, 700);
     } else {
 
         stroke(255, 255, 255);
@@ -131,55 +151,54 @@ function draw() {
             ctx.fillText(cities.length + " Cities", 5, 17);
         }
 
-  }
+    }
 }
 
 function mouseClicked() {
-  if (!startAlgorithm) {
-    if (!(mouseX < (d / 2) || mouseY < (d / 2) || mouseX > width - (d / 2) || mouseY > height - (d / 2))) {
+    if (!startAlgorithm) {
+        if (!(mouseX < (d / 2) || mouseY < (d / 2) || mouseX > width - (d / 2) || mouseY > height - (d / 2))) {
 
-      const x = mouseX;
-      const y = mouseY;
-      let pozitionTaken = false;
+            const x = mouseX;
+            const y = mouseY;
+            let pozitionTaken = false;
 
-      for (let i = 0; i < cities.length; i++) {
-        if (cities[i].x === x && cities[i].y === y) {
-          pozitionTaken = true;
+            for (let i = 0; i < cities.length; i++) {
+                if (cities[i].x === x && cities[i].y === y) {
+                    pozitionTaken = true;
+                }
+            }
+
+            if (!pozitionTaken) {
+                const v = createVector(x, y);
+                cities[cities.length] = v;
+                order[count] = count;
+                count++;
+            }
         }
-      }
 
-      if (!pozitionTaken) {
-        const v = createVector(x, y);
-        cities[cities.length] = v;
-        order[count] = count;
-        count++;
-      }
+        if (generatePopulation) {
+            for (let i = 0; i < popSize; i++) {
+                population[i] = shuffle(order);
+            }
+            startAlgorithm = true;
+        }
     }
-
-    if (generatePopulation) {
-      for (let i = 0; i < popSize; i++) {
-        population[i] = shuffle(order);
-      }
-      startAlgorithm = true;
-    }
-  }
 }
 
 function generateCitiesFunction() {
-  nrCities = Math.floor(Math.random() * 11) + 10;
-  let a = width;
-  for (let i = 0; i < nrCities; i++) {
-    const v = createVector(
-      random(7 * (a / 8) - 1 * (a / 8) + 1 * (a / 8)) + 10,
-      random(7 * (a / 8) - 1 * (a / 8)) + 1 * (a / 8) + 10
-    );
-    cities[i] = v;
-    order[i] = i;
-  }
-  if (generatePopulation) {
+    nrCities = Math.floor(Math.random() * 16) + 15;
+    let a = width;
+    for (let i = 0; i < nrCities; i++) {
+        const v = createVector(
+            random(7 * (a / 8) - (a / 8) + (a / 8)) + 10,
+            random(7 * (a / 8) - (a / 8)) + (a / 8) + 10
+        );
+        cities[i] = v;
+        order[i] = i;
+    }
+
     for (let i = 0; i < popSize; i++) {
-      population[i] = shuffle(order);
+        population[i] = shuffle(order);
     }
     startAlgorithm = true;
-  }
 }
